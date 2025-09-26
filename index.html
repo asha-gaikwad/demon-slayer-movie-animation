@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Directors Hover Animation + Hero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Barlow Condensed', sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      background: #000;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      height: 100vh;
+      background: url('your-hero-image.jpg') center/cover no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #f93434;
+    }
+    .hero h1 {
+      font-size: clamp(48px, 14vw, 250px);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1;
+      white-space: nowrap;
+      position: relative;
+      z-index: 2;
+    }
+    .hero .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000000;
+      z-index: 1;
+    }
+    .hero p {
+      position: absolute;
+      right: 5%;
+      top: 80%;
+      transform: translateY(-100%);
+      font-size: clamp(16px, 2vw, 24px);
+      font-weight: 400;
+      max-width: 500px;
+      text-align: right;
+      z-index: 2;
+      opacity: 0;
+    }
+
+    /* IMAGE HOVER SECTION */
+    .container {
+      text-align: center;
+      padding: 200px 20px;
+      background-color: #fffefe;
+    }
+    .images {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .img-box {
+      width: 150px;
+      height: 200px;
+      overflow: hidden;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+    }
+    .img-box img {
+      width: 100%;
+      object-fit: cover;
+      filter: grayscale(1);
+    }
+    .profile-names {
+      position: relative;
+      height: 300px;
+    }
+    h1.default {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      margin: 0;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: clamp(48px, 14vw, 250px);
+      line-height: 1;
+      white-space: nowrap;
+      color: #000000;
+      -webkit-text-stroke: 1px #f93434;
+      z-index: 1;
+      opacity: 1;
+    }
+    h1.red {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      margin: 0;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: clamp(48px, 14vw, 250px);
+      line-height: 1;
+      white-space: nowrap;
+      color: #f93434;
+      z-index: 2;
+      opacity: 0;
+    }
+
+    /* HORIZONTAL SCROLL SECTION */
+    .horizontal-section {
+      position: relative;
+      height: 80vh;
+      background: #111;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .horizontal-wrapper {
+      display: flex;
+      gap: 40px;
+      height: 80%;
+      will-change: transform;
+    }
+    .card {
+      flex: 0 0 300px;
+      background: #222;
+      border-radius: 16px;
+      padding: 150px;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+    .card img {
+      width: 100%;
+      border-radius: 12px;
+      margin-top: -100px;
+      height: 450px;
+      object-fit: cover;
+    }
+    .card h3 {
+      font-size: 1.5rem;
+      margin: 10px 0;
+      color: #f93434;
+    }
+    .card p {
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+   /* FINAL BATTLE SECTION */
+.final-battle {
+  position: relative;
+  min-height: 120vh;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 40px;
+}
+.battle-content {
+  /* max-width: 900px; */
+  color: #fff;
+  z-index: 2;
+}
+.final-battle h2 {
+  font-size: clamp(48px, 10vw, 120px);
+  font-weight: 900;
+  text-transform: uppercase;
+ color: #000000;
+  -webkit-text-stroke: 1px #f93434;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: scale(0.5);
+}
+.final-battle p {
+  font-size: clamp(16px, 2vw, 28px);
+  color: #f93434;
+  margin-bottom: 50px;
+  opacity: 0;
+  max-width: 1000px;
+  margin-left: 145px;
+  transform: scale(0.8);
+}
+.battle-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.battle-gallery img {
+  width: 100%;
+  max-width: 1500px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  opacity: 0;
+  transform: translateY(100px) scale(0.9);
+}
+
+  </style>
+</head>
+<body>
+
+<!-- Smooth Wrapper -->
+<div id="smooth-wrapper">
+  <div id="smooth-content">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="overlay"></div>
+      <h1 data-speed="0.8">Demon Slayer</h1>
+      <p data-speed="1.3">
+        Join Tanjiro and the Demon Slayer Corps in their epic battle against Muzan and his demons.
+        Discover a world of breathtaking battles and unbreakable bonds.
+      </p>
+    </section>
+
+    <!-- IMAGE ANIMATION SECTION -->
+    <div class="container">
+      <div class="images">
+        <div class="img-box" data-name="Inosuke"><img src="assets/anime-9.jpg" alt=""></div>
+        <div class="img-box" data-name="Tengen"><img src="assets/anime-8.jpg" alt=""></div>
+        <div class="img-box" data-name="Shinobu"><img src="assets/anime-2.jpg" alt=""></div>
+        <div class="img-box" data-name="Tanjiro"><img src="assets/anime-1.jpg" alt=""></div>
+        <div class="img-box" data-name="Zenitsu"><img src="assets/anime-4.jpg" alt=""></div>
+        <div class="img-box" data-name="Muzan"><img src="assets/anime-10.jpg" alt=""></div>
+        <div class="img-box" data-name="Nezuko"><img src="assets/anime-5.jpg" alt=""></div>
+        <div class="img-box" data-name="Mitsuri"><img src="assets/anime-3.jpg" alt=""></div>
+        <div class="img-box" data-name="Rengoku"><img src="assets/anime-6.jpg" alt=""></div>
+        <div class="img-box" data-name="Iguro"><img src="assets/anime-7.jpg" alt=""></div>
+      </div>
+      <div class="profile-names">
+        <h1 class="default">Characters</h1>
+        <h1 class="red"></h1>
+      </div>
+    </div>
+
+    <!-- HORIZONTAL CARD SCROLL SECTION -->
+    <section class="horizontal-section">
+      <div class="horizontal-wrapper">
+        <div class="card">
+          <img src="assets/anime-1.jpg" alt="">
+          <h3>Tanjiro</h3>
+          <p>Brave and determined Demon Slayer with a kind heart.</p>
+        </div>
+        <div class="card">
+          <img src="assets/anime-5.jpg" alt="">
+          <h3>Nezuko</h3>
+          <p>A demon with humanity left, Tanjiro’s sister.</p>
+        </div>
+        <div class="card">
+          <img src="assets/anime-4.jpg" alt="">
+          <h3>Zenitsu</h3>
+          <p>Timid but powerful when unconscious in battle.</p>
+        </div>
+        <div class="card">
+          <img src="assets/anime-9.jpg" alt="">
+          <h3>Inosuke</h3>
+          <p>Wild and fearless fighter raised by boars.</p>
+        </div>
+        <div class="card">
+          <img src="assets/anime-6.jpg" alt="">
+          <h3>Rengoku</h3>
+          <p>Flame Hashira, known for his burning spirit.</p>
+        </div>
+        <div class="card">
+          <img src="assets/anime-3.jpg" alt="">
+          <h3>Mitsuri</h3>
+          <p>Love Hashira, with incredible strength and agility.</p>
+        </div>
+        <div class="card">
+          <img src="assets/anime-2.jpg" alt="">
+          <h3>Shinobu</h3>
+          <p>Insect Hashira, skilled in poison techniques.</p>
+        </div>
+        <div class="card">
+          <img src="assets/anime-8.jpg" alt="">
+          <h3>Tengen</h3>
+          <p>Sound Hashira, known for his flamboyant style.</p>
+        </div>
+        <div class="card">
+          <img src="assets/anime-7.jpg" alt="">
+          <h3>Iguro</h3>
+          <p>Serpent Hashira, calm and collected warrior.</p>
+        </div>
+        <div class="card">
+          <img src="assets/anime-10.jpg" alt="">
+          <h3>Muzan</h3>
+          <p>The ruthless demon king and main antagonist.</p>
+        </div>
+      </div>
+    </section>
+
+        <!-- FINAL BATTLE SECTION -->
+    <section class="final-battle">
+      <div class="battle-content">
+        <h2>Final Battle</h2>
+        <p>
+          The Demon Slayer Corps unites for their ultimate fight against Muzan. 
+          Witness breathtaking action, sacrifice, and the true meaning of courage.
+        </p>
+
+        <div class="battle-gallery">
+          <img src="assets/final-battle.jpg" alt="Battle Scene 1">
+          <img src="assets/final-battle.avif" alt="Battle Scene 2">
+          <img src="assets/final-battle3.jpg" alt="Battle Scene 3">
+        </div>
+      </div>
+    </section>
+
+
+  </div>
+</div>
+
+<script>
+  gsap.registerPlugin(SplitText, ScrollTrigger, ScrollSmoother);
+
+  // ScrollSmoother init
+  ScrollSmoother.create({
+    wrapper: "#smooth-wrapper",
+    content: "#smooth-content",
+    smooth: 1.2,
+    effects: true
+  });
+
+  // HERO ANIMATION
+  const heroText = document.querySelector(".hero h1");
+  const heroPara = document.querySelector(".hero p");
+  const splitHero = new SplitText(heroText, { type: "chars" });
+
+  gsap.set(splitHero.chars, { y: 100, opacity: 0 });
+  gsap.set(heroPara, { x: 50, opacity: 0 });
+
+  gsap.timeline({
+  scrollTrigger: {
+    trigger: ".hero",
+    start: "top center",
+    toggleActions: "play reverse play reverse"
+  }
+})
+    .to(splitHero.chars, {
+      y: 0,
+      opacity: 1,
+      duration: 1.2,
+      ease: "power3.out",
+      stagger: 0.05
+    })
+    .to(heroPara, {
+      x: 0,
+      opacity: 1,
+      duration: 1,
+      ease: "power3.out"
+    }, "-=0.8");
+
+  // IMAGE HOVER ANIMATION
+  const defaultTitle = document.querySelector(".default");
+  const hoverTitle = document.querySelector(".red");
+  const boxes = document.querySelectorAll(".img-box");
+  let hovering = false;
+
+  boxes.forEach(box => {
+    box.addEventListener("mouseenter", () => {
+      hovering = true;
+      const name = box.dataset.name;
+      hoverTitle.textContent = name;
+      const splitHover = new SplitText(hoverTitle, { type: "chars" });
+      gsap.set(splitHover.chars, { yPercent: 40 });
+      gsap.to(splitHover.chars, { 
+        yPercent: 0, 
+        duration: 0.5, 
+        stagger: 0.05, 
+        ease: "power3.out" 
+      });
+      gsap.to(defaultTitle, { opacity: 0, duration: 0.2 });
+      gsap.to(hoverTitle, { opacity: 1, duration: 0.3 });
+      gsap.to(box.querySelector("img"), { 
+        scale: 1.2, 
+        filter: "grayscale(0)", 
+        duration: 0.5 
+      });
+    });
+
+    box.addEventListener("mouseleave", () => {
+      hovering = false;
+      const splitHover = new SplitText(hoverTitle, { type: "chars" });
+      gsap.to(splitHover.chars, { 
+        yPercent: 40, 
+        duration: 0.5, 
+        stagger: 0.05, 
+        ease: "power3.in" 
+      });
+      gsap.to(hoverTitle, { opacity: 0, duration: 0.3 });
+      setTimeout(() => {
+        if (!hovering) {
+          const splitDefault = new SplitText(defaultTitle, { type: "chars" });
+          gsap.set(splitDefault.chars, { yPercent: -20 });
+          gsap.to(splitDefault.chars, { 
+            yPercent: 0, 
+            duration: 0.5, 
+            stagger: 0.05, 
+            ease: "power3.out" 
+          });
+          gsap.to(defaultTitle, { opacity: 1, duration: 0.3 });
+        }
+      }, 50);
+      gsap.to(box.querySelector("img"), { 
+        scale: 1, 
+        filter: "grayscale(1)", 
+        duration: 0.5 
+      });
+    });
+  });
+
+  // HORIZONTAL SCROLL ANIMATION
+  const horizontalWrapper = document.querySelector(".horizontal-wrapper");
+  const sections = gsap.utils.toArray(".card");
+
+  gsap.to(horizontalWrapper, {
+    xPercent: -8 * (sections.length - 1),
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".horizontal-section",
+      pin: true,
+      scrub: 1,
+      snap: 1 / (sections.length - 1),
+      end: () => "+=" + horizontalWrapper.offsetWidth
+    }
+  });
+
+  // FINAL BATTLE TITLE & PARAGRAPH ZOOM
+gsap.timeline({
+  scrollTrigger: {
+    trigger: ".final-battle",
+    start: "top center",
+    toggleActions: "play reverse play reverse"
+  }
+})
+.to(".final-battle h2", {
+  opacity: 1,
+  scale: 1,
+  duration: 1,
+  ease: "power3.out"
+})
+.to(".final-battle p", {
+  opacity: 1,
+  scale: 1,
+  duration: 1,
+  ease: "power3.out"
+}, "-=0.6");
+
+// ZOOM-IN ANIMATION FOR IMAGES
+gsap.utils.toArray(".battle-gallery img").forEach((img, i) => {
+  gsap.fromTo(img,
+    { opacity: 0, scale: 0.7, y: 100 },
+    {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      duration: 1.5,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: img,
+        start: "top 80%",
+        toggleActions: "play reverse play reverse"
+      }
+    }
+  );
+});
+
+
+</script>
+
+</body>
+</html>
